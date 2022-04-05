@@ -30,6 +30,14 @@ void sig_handler(int signum)
 	case SIGFPE:
 		printf("I am in Floating-point exception\n");
 		fflush(stdout);
+		alarm(1); // this will rais the next one
+		sleep(1);
+		break;
+
+	// Timer signal from alarm(2)
+	case SIGALRM:
+		printf("I am in Timer signal from alarm(2)\n");
+		fflush(stdout);
 		asm("ud2"); // this will raise the next one
 		break;
 
@@ -62,6 +70,7 @@ int main()
 	int status;
 	signal(SIGCHLD, sig_handler);
 	signal(SIGUSR1, sig_handler);
+	signal(SIGALRM, sig_handler);
 	signal(SIGFPE, sig_handler);
 	signal(SIGILL, sig_handler);
 	signal(SIGUSR2, sig_handler);
